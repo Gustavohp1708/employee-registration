@@ -52,6 +52,8 @@ O endereço possui:
 - `complement`
 - `city`
 - `state`
+  
+A relação entre funcionário e endereço é `OneToOne`: cada funcionário possui um único endereço vinculado, e cada endereço pertence a um único funcionário.
 
 Departamentos aceitos:
 
