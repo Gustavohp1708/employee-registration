@@ -12,7 +12,7 @@ public record DtoCreateAddressRequest(
         String neighborhood,
 
         @NotBlank
-        @Pattern(regexp = "\\d{8}")
+        @Pattern(regexp = "\\d{5}-?\\d{3}")
         String postalCode,
 
         String number,

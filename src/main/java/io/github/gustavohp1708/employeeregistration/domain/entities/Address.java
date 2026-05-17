@@ -1,4 +1,4 @@
-package io.github.gustavohp1708.employeeregistration.domain.antities;
+package io.github.gustavohp1708.employeeregistration.domain.entities;
 
 import io.github.gustavohp1708.employeeregistration.domain.dto.dtoAddress.DtoCreateAddressRequest;
 import io.github.gustavohp1708.employeeregistration.domain.dto.dtoAddress.DtoUpdateAddress;
@@ -7,9 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_addresses")
+@Table(name = "addresses")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,13 +23,29 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String street;
+
     private String neighborhood;
+
+    @Column(name = "postal_code")
     private String postalCode;
+
     private String number;
+
     private String complement;
+
     private String city;
+
     private String state;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     public Address(DtoCreateAddressRequest request) {
         this.street = request.street();

@@ -1,6 +1,6 @@
 package io.github.gustavohp1708.employeeregistration.domain.dto.dtoAddress;
 
-import io.github.gustavohp1708.employeeregistration.domain.antities.Address;
+import io.github.gustavohp1708.employeeregistration.domain.entities.Address;
 
 public record DtoAddressDetailsResponse(
 

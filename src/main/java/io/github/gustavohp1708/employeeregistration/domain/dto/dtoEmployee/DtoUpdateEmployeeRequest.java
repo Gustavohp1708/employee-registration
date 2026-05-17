@@ -1,10 +1,17 @@
 package io.github.gustavohp1708.employeeregistration.domain.dto.dtoEmployee;
 
-import io.github.gustavohp1708.employeeregistration.domain.antities.Address;
-import io.github.gustavohp1708.employeeregistration.domain.antities.Department;
+import io.github.gustavohp1708.employeeregistration.domain.entities.Department;
 import io.github.gustavohp1708.employeeregistration.domain.dto.dtoAddress.DtoUpdateAddress;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public record DtoUpdateEmployeeRequest(
+
+        @NotNull
+        Long id,
 
         String name,
 
@@ -14,9 +21,17 @@ public record DtoUpdateEmployeeRequest(
 
         String role,
 
+        @Positive
+        BigDecimal salary,
+
+        LocalDate admissionDate,
+
+        LocalDate deactivationDate,
+
         Department department,
 
         DtoUpdateAddress address
 
 ) {
+
 }
