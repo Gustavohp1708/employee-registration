@@ -89,13 +89,13 @@ Base path:
 http://localhost:8080/employees
 ```
 
-| Método | Endpoint | Descrição |
-| --- | --- | --- |
-| `POST` | `/employees` | Cria um funcionário |
-| `GET` | `/employees` | Lista funcionários com paginação |
-| `GET` | `/employees/{id}` | Busca um funcionário pelo ID |
-| `PUT` | `/employees` | Atualiza dados de um funcionário |
-| `DELETE` | `/employees/{id}` | Desativa um funcionário |
+| Método | Endpoint | Descrição                             |
+| --- | --- |---------------------------------------|
+| `POST` | `/employees` | Cria um funcionário                   |
+| `GET` | `/employees` | Lista funcionários com paginação      |
+| `GET` | `/employees/{id}` | Busca um funcionário pelo ID          |
+| `PUT` | `/employees` | Atualiza dados de um funcionário      |
+| `DELETE` | `/employees/{id}` | Desativa um funcionário (soft-delete) |
 
 ## Criar funcionário
 
@@ -118,7 +118,7 @@ Campos obrigatórios:
 - `address.city`
 - `address.state`
 
-O campo `email` precisa ter formato válido. O campo `salary` precisa ser positivo. O campo `postalCode` aceita os formatos `00000000` ou `00000-000`.
+O campo `email` precisa ter formato válido. O campo `salary` precisa ser positivo. Os campos de data (`admissionDate` e `deactivationDate`) usam o formato `dd-MM-yyyy`. O campo `postalCode` aceita os formatos `00000000` ou `00000-000`.
 
 Exemplo de requisição:
 
@@ -129,7 +129,7 @@ Exemplo de requisição:
   "phone": "11999999999",
   "role": "Desenvolvedora Backend",
   "salary": 7500.00,
-  "admissionDate": "2026-05-17",
+  "admissionDate": "17-05-2026",
   "department": "TECNOLOGIA DA INFORMAÇÃO",
   "address": {
     "street": "Rua das Flores",
@@ -153,7 +153,7 @@ Resposta: `201 Created`
   "phone": "11999999999",
   "role": "Desenvolvedora Backend",
   "salary": 7500.00,
-  "admissionDate": "2026-05-17",
+  "admissionDate": "17-05-2026",
   "deactivationDate": null,
   "department": "TECNOLOGIA DA INFORMAÇÃO",
   "address": {
@@ -208,7 +208,7 @@ Resposta: `200 OK`
   "phone": "11999999999",
   "role": "Desenvolvedora Backend",
   "salary": 7500.00,
-  "admissionDate": "2026-05-17",
+  "admissionDate": "17-05-2026",
   "deactivationDate": null,
   "department": "TECNOLOGIA DA INFORMAÇÃO",
   "address": {

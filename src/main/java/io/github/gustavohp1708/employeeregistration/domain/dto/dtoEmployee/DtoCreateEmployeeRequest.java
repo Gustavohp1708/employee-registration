@@ -1,5 +1,6 @@
 package io.github.gustavohp1708.employeeregistration.domain.dto.dtoEmployee;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.gustavohp1708.employeeregistration.domain.entities.Department;
 import io.github.gustavohp1708.employeeregistration.domain.dto.dtoAddress.DtoCreateAddressRequest;
 import jakarta.validation.Valid;
@@ -32,8 +33,10 @@ public record DtoCreateEmployeeRequest(
         BigDecimal salary,
 
         @NotNull
+        @JsonFormat(pattern = "dd-MM-yyyy")
         LocalDate admissionDate,
 
+        @JsonFormat(pattern = "dd-MM-yyyy")
         LocalDate deactivationDate,
 
         @NotNull
