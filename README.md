@@ -24,8 +24,7 @@ spring.datasource.username=
 spring.datasource.password=
 ```
 
-
-As migrations do Flyway criam as tabelas `addresses` e `employees` automaticamente ao iniciar a aplicação.
+As migrations do Flyway criam e atualizam as tabelas `addresses` e `employees` automaticamente ao iniciar a aplicação.
 
 ## Modelo da aplicação
 
@@ -36,6 +35,9 @@ Um funcionário possui:
 - `email`
 - `phone`
 - `role`
+- `salary`
+- `admissionDate`
+- `deactivationDate`
 - `department`
 - `address`
 - `active`
@@ -53,25 +55,47 @@ O endereço possui:
 
 Departamentos aceitos:
 
-- `ESTAGIÁRIO`
-- `TRAINEE`
-- `ANALISTA_JUNIOR`
-- `ANALISTA_PLENO`
-- `ANALISTA_SENIOR`
+- `ADMINISTRAÇÃO`
+- `COMERCIAL`
+- `COMPRAS`
+- `CONTABILIDADE`
+- `DEPARTAMENTO PESSOAL`
+- `FINANCEIRO`
+- `JURÍDICO`
+- `LOGÍSTICA`
+- `MARKETING`
+- `OPERAÇÕES`
+- `PLANEJAMENTO ESTRATÉGICO`
+- `RECURSOS HUMANOS`
+- `RELAÇÕES PÚBLICAS`
+- `TECNOLOGIA DA INFORMAÇÃO`
+- `VENDAS`
+
+Também são aceitos os nomes internos do enum, sem acentos e com `_`, como `RECURSOS_HUMANOS` e `TECNOLOGIA_DA_INFORMACAO`.
+
+## Migrations
+
+- `V1__create-table-addresses.sql`: cria a tabela de endereços.
+- `V2__add-timestamps-to-addresses.sql`: adiciona timestamps em endereços.
+- `V3__create-table-employees.sql`: cria a tabela de funcionários.
+- `V4__update_department_enum_values.sql`: normaliza valores antigos do enum.
+- `V5__update-department-enum-values.sql`: adiciona salário, data de admissão, data de desativação e atualiza os valores válidos de departamento.
 
 ## Endpoints
 
 Base path:
+
+```text
 http://localhost:8080/employees
+```
 
-
-| Método | Endpoint | Descrição                             |
-| --- | --- |---------------------------------------|
-| `POST` | `/employees` | Cria um funcionário                   |
-| `GET` | `/employees` | Lista funcionários com paginação      |
-| `GET` | `/employees/{id}` | Busca um funcionário pelo ID          |
-| `PUT` | `/employees` | Atualiza dados de um funcionário      |
-| `DELETE` | `/employees/{id}` | Desativa um funcionário (soft-delete) |
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| `POST` | `/employees` | Cria um funcionário |
+| `GET` | `/employees` | Lista funcionários com paginação |
+| `GET` | `/employees/{id}` | Busca um funcionário pelo ID |
+| `PUT` | `/employees` | Atualiza dados de um funcionário |
+| `DELETE` | `/employees/{id}` | Desativa um funcionário |
 
 ## Criar funcionário
 
@@ -85,6 +109,8 @@ Campos obrigatórios:
 - `email`
 - `phone`
 - `role`
+- `salary`
+- `admissionDate`
 - `department`
 - `address.street`
 - `address.neighborhood`
@@ -92,7 +118,7 @@ Campos obrigatórios:
 - `address.city`
 - `address.state`
 
-O campo `email` precisa ter formato válido. O campo `postalCode` aceita os formatos `00000000` ou `00000-000`.
+O campo `email` precisa ter formato válido. O campo `salary` precisa ser positivo. O campo `postalCode` aceita os formatos `00000000` ou `00000-000`.
 
 Exemplo de requisição:
 
@@ -102,7 +128,9 @@ Exemplo de requisição:
   "email": "ana.souza@email.com",
   "phone": "11999999999",
   "role": "Desenvolvedora Backend",
-  "department": "ANALISTA_JUNIOR",
+  "salary": 7500.00,
+  "admissionDate": "2026-05-17",
+  "department": "TECNOLOGIA DA INFORMAÇÃO",
   "address": {
     "street": "Rua das Flores",
     "neighborhood": "Centro",
@@ -124,7 +152,10 @@ Resposta: `201 Created`
   "email": "ana.souza@email.com",
   "phone": "11999999999",
   "role": "Desenvolvedora Backend",
-  "department": "ANALISTA_JUNIOR",
+  "salary": 7500.00,
+  "admissionDate": "2026-05-17",
+  "deactivationDate": null,
+  "department": "TECNOLOGIA DA INFORMAÇÃO",
   "address": {
     "id": 1,
     "street": "Rua das Flores",
@@ -176,7 +207,10 @@ Resposta: `200 OK`
   "email": "ana.souza@email.com",
   "phone": "11999999999",
   "role": "Desenvolvedora Backend",
-  "department": "ANALISTA_JUNIOR",
+  "salary": 7500.00,
+  "admissionDate": "2026-05-17",
+  "deactivationDate": null,
+  "department": "TECNOLOGIA DA INFORMAÇÃO",
   "address": {
     "id": 1,
     "street": "Rua das Flores",
@@ -213,7 +247,8 @@ Exemplo de requisição:
   "name": "Ana Souza Silva",
   "phone": "11888888888",
   "role": "Desenvolvedora Java",
-  "department": "ANALISTA_PLENO",
+  "salary": 9200.00,
+  "department": "PLANEJAMENTO ESTRATÉGICO",
   "address": {
     "street": "Avenida Paulista",
     "number": "1500",
@@ -240,7 +275,7 @@ DELETE /employees/1
 
 Resposta: `204 No Content`
 
-Este endpoint não remove o registro do banco. Ele altera o campo `active` do funcionário para `false`.
+Este endpoint não remove o registro do banco. Ele altera o campo `active` para `false` e preenche `deactivationDate` com a data atual.
 
 ## Observações
 
